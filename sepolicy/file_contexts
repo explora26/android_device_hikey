@@ -6,3 +6,8 @@
 /dev/hci_tty           u:object_r:hci_attach_dev:s0
 /dev/ttyAMA1           u:object_r:hci_attach_dev:s0
 /system/bin/uim        u:object_r:hci_attach_exec:s0
+
+/dev/nanohub                               u:object_r:sensors_device:s0
+/dev/nanohub_comms                         u:object_r:sensors_device:s0
+/system/bin/nanoapp_cmd                    u:object_r:nanoapp_cmd_exec:s0
+/sys/devices/virtual/nanohub/nanohub(/.*)? u:object_r:sysfs_nanoapp_cmd:s0

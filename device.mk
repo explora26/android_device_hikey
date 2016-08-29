@@ -32,6 +32,7 @@ PRODUCT_COPY_FILES +=   $(LOCAL_KERNEL):kernel \
 			$(LOCAL_PATH)/$(LOCAL_FSTAB):root/fstab.hikey \
 			$(LOCAL_PATH)/init.hikey.rc:root/init.hikey.rc \
 			$(LOCAL_PATH)/init.hikey.usb.rc:root/init.hikey.usb.rc \
+			$(LOCAL_PATH)/init.hikey.nanohub.rc:root/init.hikey.sensorhub.rc \
 			$(LOCAL_PATH)/ueventd.hikey.rc:root/ueventd.hikey.rc \
 			$(LOCAL_PATH)/hikey.kl:system/usr/keylayout/hikey.kl
 
@@ -105,3 +106,34 @@ PRODUCT_COPY_FILES += \
         device/linaro/hikey/etc/media_codecs.xml:system/etc/media_codecs.xml \
         frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml
 
+# Copy media codecs config file
+PRODUCT_COPY_FILES += \
+        frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+        frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
+        frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
+        frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
+        frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
+        frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml \
+        frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/etc/permissions/android.hardware.sensor.stepcounter.xml \
+        frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/etc/permissions/android.hardware.sensor.stepdetector.xml \
+        frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:system/etc/permissions/android.hardware.sensor.hifi_sensors.xml
+
+# Sensor & activity_recognition HAL
+TARGET_USES_NANOHUB_SENSORHAL := true
+NANOHUB_SENSORHAL_LID_STATE_ENABLED := true
+NANOHUB_SENSORHAL_SENSORLIST := $(LOCAL_PATH)/sensorhal/sensorlist.cpp
+
+PRODUCT_PACKAGES += \
+    nanoapp_cmd
+
+# sensor utilities (only for userdebug and eng builds)
+ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+PRODUCT_PACKAGES += \
+    nanotool \
+    sensortest
+endif
+
+PRODUCT_PACKAGES += \
+    sensors.hikey \
+    activity_recognition.hikey \
+    context_hub.default
